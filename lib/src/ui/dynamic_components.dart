@@ -338,7 +338,7 @@ class _DynamicButtonState extends State<DynamicButton> {
     return Builder(builder: (BuildContext context) {
       return Container(
           alignment: Alignment.bottomCenter,
-          padding: const EdgeInsets.symmetric(vertical: 34),
+          padding: const EdgeInsets.symmetric(vertical: 24),
           child: Consumer<PluginState>(builder: (context, state, child) {
             return state.loadingNetworkData
                 ? LoadUtil()
@@ -1034,6 +1034,7 @@ class DynamicTextViewWidget implements IFormWidget {
         ? Builder(builder: (BuildContext context) {
             return Column(children: [
               ListView.builder(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: mapItems.length,
@@ -1043,7 +1044,8 @@ class DynamicTextViewWidget implements IFormWidget {
                       key == null || value == null || value == "");
 
                   return Material(
-                      elevation: 1,
+                      surfaceTintColor: Colors.white24,
+                      elevation: 3,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(8.0)),
                       child: Padding(

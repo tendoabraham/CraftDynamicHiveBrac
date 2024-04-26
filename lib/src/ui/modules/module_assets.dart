@@ -45,12 +45,16 @@ class MenuItemTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        title,
-        style: TextStyle(
-            fontSize: textSize ?? 14,
-            fontWeight: fontWeight ?? FontWeight.normal),
-        overflow: TextOverflow.fade,
-        textAlign: TextAlign.center,
-        softWrap: true,
-      );
+    title,
+    style: TextStyle(
+        fontSize: 13,
+        color: Colors.black,
+        fontFamily: "Mulish",
+        fontWeight: FontWeight.bold
+    ),
+    // overflow: TextOverflow.fade,
+    textAlign: TextAlign.center,
+    softWrap: true,
+    maxLines: 2,
+  );
 }

@@ -9,9 +9,9 @@ class ModuleItemWidget extends StatelessWidget {
 
   ModuleItemWidget(
       {super.key,
-      this.isMain = false,
-      this.isSearch = false,
-      required this.moduleItem});
+        this.isMain = false,
+        this.isSearch = false,
+        required this.moduleItem});
 
   @override
   Widget build(BuildContext context) {
@@ -41,55 +41,44 @@ class VerticalModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MenuProperties? menuProperties = moduleItem.menuProperties;
-    MenuBorder? menuBorder = moduleItem.menuBorder;
-
-    MainAxisAlignment getAlignment() {
-      if (menuProperties?.alignment == "END") {
-        return MainAxisAlignment.end;
-      } else if (menuProperties?.alignment == "START") {
-        return MainAxisAlignment.start;
-      }
-      return MainAxisAlignment.center;
-    }
+    // MenuProperties? menuProperties = moduleItem.menuProperties;
+    // MenuBorder? menuBorder = moduleItem.menuBorder;
+    //
+    // MainAxisAlignment getAlignment() {
+    //   if (menuProperties?.alignment == "END") {
+    //     return MainAxisAlignment.end;
+    //   } else if (menuProperties?.alignment == "START") {
+    //     return MainAxisAlignment.start;
+    //   }
+    //   return MainAxisAlignment.center;
+    // }
 
     return Card(
-        surfaceTintColor:
-            CommonUtils.parseColor(menuProperties?.backgroundColor ?? "#fffff"),
-        elevation: menuProperties?.elevation ?? 0,
-        shape: RoundedRectangleBorder(
-            side: BorderSide(
-                width: menuBorder?.width ?? 1.5,
-                color: CommonUtils.parseColor(menuBorder?.color ?? "#fffff")),
-            borderRadius: BorderRadius.all(
-              Radius.circular(menuBorder?.radius ?? 12),
-            )),
-        child: Padding(
-            padding: EdgeInsets.all(menuProperties?.padding ?? 4),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: getAlignment(),
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  MenuItemImage(
-                    imageUrl: moduleItem.moduleUrl ?? "",
-                    iconSize: menuProperties?.iconSize ?? 44,
-                  ),
-                  SizedBox(
-                    height: double.parse(menuProperties?.spaceBetween ?? "12"),
-                  ),
-                  Flexible(
-                      child: MenuItemTitle(
-                    title: moduleItem.moduleName,
-                    textSize: menuProperties?.textSize,
-                    fontWeight:
-                        menuProperties?.fontWeight?.toLowerCase() == "bold"
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                  ))
-                ],
-              ),
-            )));
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        //set border radius more than 50% of height and width to make circle
+      ),
+      elevation: 2,
+      shadowColor: Colors.black,
+      surfaceTintColor: Colors.white,
+      child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                MenuItemImage(
+                  imageUrl: moduleItem.moduleUrl ?? "",
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                MenuItemTitle(title: moduleItem.moduleName)
+              ],
+            ),
+          )),
+    );
   }
 
   Color? getMenuColor(context) =>
@@ -121,7 +110,7 @@ class HorizontalModule extends StatelessWidget {
 
     return Card(
         surfaceTintColor:
-            CommonUtils.parseColor(menuProperties?.backgroundColor ?? "ffffff"),
+        CommonUtils.parseColor(menuProperties?.backgroundColor ?? "ffffff"),
         elevation: menuProperties?.elevation ?? 0,
         shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -131,7 +120,7 @@ class HorizontalModule extends StatelessWidget {
               Radius.circular(menuBorder?.radius ?? 12),
             )),
         child: Padding(
-            padding: EdgeInsets.all(menuProperties?.padding ?? 8),
+            padding: EdgeInsets.all(menuProperties?.padding ?? 4),
             child: Center(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,20 +128,20 @@ class HorizontalModule extends StatelessWidget {
                 children: [
                   MenuItemImage(
                     imageUrl: moduleItem.moduleUrl ?? "",
-                    iconSize: menuProperties?.iconSize ?? 54,
+                    iconSize: menuProperties?.iconSize ?? 44,
                   ),
                   SizedBox(
                     width: double.parse(menuProperties?.spaceBetween ?? "12"),
                   ),
                   Flexible(
                       child: MenuItemTitle(
-                    title: moduleItem.moduleName,
-                    textSize: menuProperties?.textSize,
-                    fontWeight:
+                        title: moduleItem.moduleName,
+                        textSize: menuProperties?.textSize,
+                        fontWeight:
                         menuProperties?.fontWeight?.toLowerCase() == "bold"
                             ? FontWeight.bold
                             : FontWeight.normal,
-                  ))
+                      ))
                 ],
               ),
             )));
@@ -203,9 +192,9 @@ class ModuleUtil {
       dataObject.addAll({"MerchantID": moduleItem.merchantID});
       _dynamicRequest
           .dynamicRequest(moduleItem,
-              dataObj: dataObject,
-              action: ActionType.PAYBILL,
-              url: RouteUrl.account.name)
+          dataObj: dataObject,
+          action: ActionType.PAYBILL,
+          url: RouteUrl.account.name)
           .then((value) {
         Navigator.of(context).pop();
         DynamicPostCall.processDynamicResponse(
@@ -230,6 +219,16 @@ class ModuleUtil {
       case ModuleId.PENDINGTRANSACTIONS:
         {
           break;
+        }
+      case ModuleId.ADDBENEFICIARY:
+        {
+          {
+            CommonUtils.navigateToRoute(
+                context: context,
+                widget: AddBeneficiary(
+                ));
+            break;
+          }
         }
       case ModuleId.VIEWBENEFICIARY:
         {

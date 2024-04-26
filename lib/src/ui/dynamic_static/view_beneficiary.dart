@@ -27,114 +27,199 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.moduleItem.moduleName),
-      ),
-      body: BlurrLoadScreen(
-          mainWidget: FutureBuilder<List<Beneficiary>>(
-              future: viewBeneficiaries(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Beneficiary>> snapshot) {
-                Widget widget = Center(child: LoadUtil());
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/bk4.png'),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'View Beneficiaries',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        color: APIService.appPrimaryColor,
+                        fontFamily: "Mulish",
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[300],
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: APIService.appPrimaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                height: 1.0, // Line height
+                color: Colors.grey[300], // Line color
+              ),
+              Expanded(
+                child: FutureBuilder<List<Beneficiary>>(
+                  future: viewBeneficiaries(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Beneficiary>> snapshot) {
+                    Widget widget = Center(child: CircularLoadUtil());
 
-                if (snapshot.hasData) {
-                  final itemCount = snapshot.data?.length ?? 0;
+                    if (snapshot.hasData) {
+                      final itemCount = snapshot.data?.length ?? 0;
 
-                  if (itemCount == 0) {
-                    widget = const EmptyUtil();
-                  } else {
-                    widget = ListView.separated(
-                        separatorBuilder: (context, index) => Divider(
-                              color: Colors.grey[300],
-                            ),
-                        itemCount: itemCount,
-                        itemBuilder: (context, index) {
-                          final beneficiary = snapshot.data![index];
+                      if (itemCount == 0) {
+                        widget = EmptyUtil();
+                      } else {
+                        widget = ListView.separated(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          itemCount: itemCount,
+                          itemBuilder: (context, index) {
+                            final beneficiary = snapshot.data![index];
 
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            return Card(
+                              elevation: 4.0,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 2,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      beneficiary.merchantName,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: APIService.appPrimaryColor,
-                                          fontWeight: FontWeight.bold),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Beneficiary ${index + 1}",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: "Mulish",
+                                            color: APIService.appPrimaryColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 12,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 1),
+                                          child: Row(
+                                            children: [
+                                              const Text(
+                                                "Name",
+                                                style: TextStyle(
+                                                  fontFamily: "Mulish",
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 12,
+                                              ),
+                                              Text(
+                                                beneficiary.accountAlias,
+                                                style: TextStyle(
+                                                  fontFamily: "Mulish",
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 1),
+                                          child: Row(
+                                            children: [
+                                              const Text(
+                                                "Account",
+                                                style: TextStyle(
+                                                  fontFamily: "Mulish",
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 12,
+                                              ),
+                                              Text(
+                                                beneficiary.accountID,
+                                                style: TextStyle(
+                                                  fontFamily: "Mulish",
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(
-                                      height: 12,
+                                    IconButton(
+                                      onPressed: () {
+                                        AlertUtil.showAlertDialog(context,
+                                            "Confirm action to delete this beneficiary ${beneficiary.accountAlias}",
+                                            isConfirm: true,
+                                            title: "Delete",
+                                            confirmButtonText: "Delete")
+                                            .then((value) {
+                                          if (value) {
+                                            deleteBeneficiary(beneficiary, context);
+                                          }
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.delete_outline_outlined,
+                                        color: Colors.red,
+                                        size: 34,
+                                      ),
                                     ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4),
-                                        child: Row(
-                                          children: [
-                                            const Text(
-                                              "Alias name",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            const SizedBox(
-                                              width: 12,
-                                            ),
-                                            Text(beneficiary.accountAlias),
-                                          ],
-                                        )),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4),
-                                        child: Row(
-                                          children: [
-                                            const Text(
-                                              "Account ID",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            const SizedBox(
-                                              width: 12,
-                                            ),
-                                            Text(beneficiary.accountID),
-                                          ],
-                                        ))
                                   ],
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      AlertUtil.showAlertDialog(context,
-                                              "Confirm action to delete ${beneficiary.merchantName}",
-                                              isConfirm: true,
-                                              title: "Delete",
-                                              confirmButtonText: "Delete")
-                                          .then((value) {
-                                        if (value) {
-                                          deleteBeneficiary(
-                                              beneficiary, context);
-                                        }
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.delete_outline_outlined,
-                                      color: Colors.red,
-                                      size: 34,
-                                    ))
-                              ],
-                            ),
-                          );
-                        });
-                  }
-                }
-                return widget;
-              })),
-    );
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    }
+                    return widget;
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),);
   }
 
   Future<List<Beneficiary>> viewBeneficiaries() async {
@@ -153,9 +238,9 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
 
     await _dynamicFormRequest
         .dynamicRequest(widget.moduleItem,
-            dataObj: DynamicInput.formInputValues,
-            context: context,
-            listType: ListType.BeneficiaryList)
+        dataObj: DynamicInput.formInputValues,
+        context: context,
+        listType: ListType.BeneficiaryList)
         .then((value) {
       isCallingService.value = false;
       if (value?.status == StatusCode.success.statusCode) {
@@ -184,9 +269,9 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
     DynamicInput.formInputValues.addAll({"HEADER": "DELETEBENEFICIARY"});
     _dynamicFormRequest
         .dynamicRequest(widget.moduleItem,
-            dataObj: DynamicInput.formInputValues,
-            context: context,
-            listType: ListType.BeneficiaryList)
+        dataObj: DynamicInput.formInputValues,
+        context: context,
+        listType: ListType.BeneficiaryList)
         .then((value) {
       isCallingService.value = false;
 

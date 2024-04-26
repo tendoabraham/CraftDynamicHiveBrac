@@ -39,55 +39,104 @@ class _BiometricLoginState extends State<BiometricLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/bk4.png'),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter
           ),
-          title: const Text("Enable fingerprint/face login"),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                "packages/craft_dynamic/assets/images/fingerprint.png",
-                width: 77,
-                height: 77,
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Biometrics Login',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        color: APIService.appPrimaryColor,
+                        fontFamily: "Mulish",
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[300],
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: APIService.appPrimaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                height: 1.0, // Line height
+                color: Colors.grey[300], // Line color
               ),
               const SizedBox(
-                height: 12.0,
+                height: 10,
               ),
-              const Text(
-                "Login with Fingerprint/Face",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 12.0,
-              ),
-              const Text(
-                "Use fingerprint for faster and easy access to your account",
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 44.0,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    enableDisableBioDialog(context: context);
-                  },
-                  child: Obx(() => Text(isBiometricEnabled.value
-                      ? "Disable Fingerprint Login"
-                      : "Enable Fingerprint Login")))
+              Expanded(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "packages/craft_dynamic/assets/images/fingerprint.png",
+                      width: 77,
+                      height: 77,
+                    ),
+                    const SizedBox(
+                      height: 12.0,
+                    ),
+                    const Text(
+                      "Login with Fingerprint/Face",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 12.0,
+                    ),
+                    const Text(
+                      "Use fingerprint for faster and easy access to your account",
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 44.0,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          enableDisableBioDialog(context: context);
+                        },
+                        child: Obx(() => Text(isBiometricEnabled.value
+                            ? "Disable Fingerprint Login"
+                            : "Enable Fingerprint Login")))
+                  ],
+                ),
+              )
+              )
             ],
           ),
-        ));
+        ),
+      ),);
   }
 
   enableDisableBioDialog({context}) {
@@ -134,6 +183,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                 TextFormField(
                   controller: _pinController,
                   obscureText: true,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(hintText: "Enter PIN"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -148,11 +198,11 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                 _isLoading
                     ? Center(child: LoadUtil())
                     : Obx(() => WidgetFactory.buildButton(
-                        context,
-                        enableBiometric,
-                        isBiometricEnabled.value
-                            ? "Disable Biometric"
-                            : "Enable Biometric"))
+                    context,
+                    enableBiometric,
+                    isBiometricEnabled.value
+                        ? "Disable Biometric"
+                        : "Enable Biometric"))
               ],
             ),
           ),
@@ -178,23 +228,23 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
       });
       Future.delayed(const Duration(milliseconds: 500), () async {
         await _services.login(encryptedPin).then((value) async => {
-              Future.delayed(const Duration(milliseconds: 1000), () {
-                if (value.status == StatusCode.success.statusCode) {
-                  _sharedPref.setBioPin(encryptedPin);
-                  isBiometricEnabled.value
-                      ? _sharedPref.setBio(false)
-                      : _sharedPref.setBio(true);
-                  isBiometricEnabled.value = !isBiometricEnabled.value;
-                  Navigator.pop(context);
-                  _pinController.clear();
-                  CommonUtils.showToast(isBiometricEnabled.value
-                      ? "Biometrics login enabled successfully"
-                      : "Biometrics login disabled successfully");
-                } else {
-                  CommonUtils.showToast(value.message);
-                }
-              }),
-            });
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            if (value.status == StatusCode.success.statusCode) {
+              _sharedPref.setBioPin(encryptedPin);
+              isBiometricEnabled.value
+                  ? _sharedPref.setBio(false)
+                  : _sharedPref.setBio(true);
+              isBiometricEnabled.value = !isBiometricEnabled.value;
+              Navigator.pop(context);
+              _pinController.clear();
+              CommonUtils.showToast(isBiometricEnabled.value
+                  ? "Biometrics login enabled successfully"
+                  : "Biometrics login disabled successfully");
+            } else {
+              CommonUtils.showToast(value.message);
+            }
+          }),
+        });
         setState(() {
           _isLoading = false;
         });
@@ -204,7 +254,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
 
   getEnrolledBiometrics() async {
     final List<BiometricType> availableBiometrics =
-        await auth.getAvailableBiometrics();
+    await auth.getAvailableBiometrics();
     return availableBiometrics;
   }
 

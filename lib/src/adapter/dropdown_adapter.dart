@@ -59,8 +59,8 @@ class _BankAccountDropDown implements IDropDownAdapter {
         ..[curr.bankAccountId] = curr.aliasName.isEmpty
             ? "${curr.bankAccountId} $balance"
             : formItem.controlId == ControlID.CLEARBANKACCOUNTID.name
-                ? "${curr.bankAccountId} $balance"
-                : "${curr.aliasName} $balance";
+            ? "${curr.bankAccountId} $balance"
+            : "${curr.aliasName} $balance";
     });
   }
 }
@@ -76,12 +76,13 @@ class _BeneficiaryDropDown implements IDropDownAdapter {
   Future<Map<String, dynamic>?>? getDropDownItems() async {
     var customerNo = await _sharedPref.getCustomerMobile();
     var beneficiaries =
-        await _beneficiaryRepository.getBeneficiariesByMerchantID(merchantID!);
+    await _beneficiaryRepository.getBeneficiariesByMerchantID(merchantID!);
     if (merchantID == "007001016" ||
         merchantID == "007001017" ||
         merchantID == 'MTNDB' ||
         merchantID == 'AIRTIME' ||
         merchantID == 'MTNUGAIRTIME' ||
+        merchantID == 'MMONEY' ||
         merchantID == 'AIRTELUG' ||
         merchantID == 'UGANDAMTNC2B' ||
         merchantID == 'AIRTELC2B') {

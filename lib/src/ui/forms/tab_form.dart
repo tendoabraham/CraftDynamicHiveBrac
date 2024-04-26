@@ -15,10 +15,10 @@ class TabWidget extends StatefulWidget {
 
   TabWidget(
       {super.key,
-      required this.title,
-      required this.formItems,
-      required this.moduleItem,
-      this.updateState});
+        required this.title,
+        required this.formItems,
+        required this.moduleItem,
+        this.updateState});
 
   @override
   State<TabWidget> createState() => _TabWidgetState();
@@ -50,8 +50,8 @@ class _TabWidgetState extends State<TabWidget> {
   List<FormItem> getContainerForms(List<FormItem> forms, FormItem container) {
     return forms
         .where((element) =>
-            element.containerID == container.controlId ||
-            element.linkedToControl == container.controlId)
+    element.containerID == container.controlId ||
+        element.linkedToControl == container.controlId)
         .toList();
   }
 
@@ -77,7 +77,7 @@ class _TabWidgetState extends State<TabWidget> {
       if (containers[i].controlType == ViewType.CONTAINER.name &&
           containers[i].controlFormat == ControlFormat.HorizontalScroll.name) {
         horizontalScroll.addAll(widget.formItems.where((item) =>
-            item.containerID == containers[i].controlId ||
+        item.containerID == containers[i].controlId ||
             item.linkedToControl == containers[i].controlId));
       }
     }
@@ -97,14 +97,14 @@ class _TabWidgetState extends State<TabWidget> {
   List<FormItem> getTabForms(List<FormItem> formItems, String linkControl) {
     List<FormItem> items = formItems
         .where((element) =>
-            element.linkedToControl == linkControl ||
-            element.linkedToControl == "" ||
-            element.linkedToControl == null)
+    element.linkedToControl == linkControl ||
+        element.linkedToControl == "" ||
+        element.linkedToControl == null)
         .toList();
 
     try {
       recentList = items.firstWhere(
-        (item) => item.controlType == ViewType.LIST.name,
+            (item) => item.controlType == ViewType.LIST.name,
       );
     } catch (e) {
       AppLogger.appLogE(tag: "tab forms error", message: e.toString());
@@ -141,42 +141,139 @@ class _TabWidgetState extends State<TabWidget> {
             length: tabs.length,
             child: Builder(builder: (BuildContext context) {
               final TabController tabController =
-                  DefaultTabController.of(context);
+              DefaultTabController.of(context);
               tabController.addListener(() {
                 if (!tabController.indexIsChanging) {
                   Provider.of<PluginState>(context, listen: false)
                       .setRequestState(false,
-                          currentTab: linkControls[tabController.index]);
+                      currentTab: linkControls[tabController.index]);
                 }
               });
               return Scaffold(
-                appBar: AppBar(
-                  elevation: 2,
-                  actions: recentList != null
-                      ? [
-                          IconButton(
-                              onPressed: () {
-                                CommonUtils.navigateToRoute(
-                                    context: context,
-                                    widget: ListDataScreen(
-                                        widget: DynamicListWidget(
-                                                moduleItem: widget.moduleItem,
-                                                formItem: recentList)
-                                            .render(),
-                                        title: widget.moduleItem.moduleName));
-                              },
-                              icon: const Icon(
-                                Icons.view_list,
-                              ))
-                        ]
-                      : null,
-                  bottom: TabBar(
-                    tabs: tabs,
-                    isScrollable: true,
+                // appBar: AppBar(
+                //   elevation: 2,
+                //   actions: recentList != null
+                //       ? [
+                //           IconButton(
+                //               onPressed: () {
+                //                 CommonUtils.navigateToRoute(
+                //                     context: context,
+                //                     widget: ListDataScreen(
+                //                         widget: DynamicListWidget(
+                //                                 moduleItem: widget.moduleItem,
+                //                                 formItem: recentList)
+                //                             .render(),
+                //                         title: widget.moduleItem.moduleName));
+                //               },
+                //               icon: const Icon(
+                //                 Icons.view_list,
+                //               ))
+                //         ]
+                //       : null,
+                //   bottom: TabBar(
+                //     tabs: tabs,
+                //     isScrollable: true,
+                //   ),
+                //   title: Text(widget.moduleItem.moduleName),
+                // ),
+                body:Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/trx_bk2.png'),
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter
+                    ),
                   ),
-                  title: Text(widget.moduleItem.moduleName),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.07,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                                onTap: (){
+                                  Navigator.pop(context);
+                                },
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.zero,
+                                      child: Image.asset(
+                                        'assets/images/back2.png',
+                                        height: 30,
+                                        width: 30,
+                                      ),
+                                    )
+                                )
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: IntrinsicWidth(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    border: Border.all(color: Colors.white, width: 2),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(widget.moduleItem!.moduleName,
+                                    maxLines: 1,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontFamily: "Mulish",
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 20
+                                    ),),
+                                ),
+                              ),),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  CommonUtils.navigateToRoute(
+                                      context: context,
+                                      widget: ListDataScreen(
+                                          widget: DynamicListWidget(
+                                              moduleItem: widget.moduleItem,
+                                              formItem: recentList)
+                                              .render(),
+                                          title: widget.moduleItem.moduleName));
+                                },
+                                icon: const Icon(
+                                  Icons.view_list,
+                                  color: Colors.white,
+                                  size: 30,
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.032,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child:  TabBar(
+                            unselectedLabelColor: Colors.grey,
+                            labelColor: const Color.fromRGBO(
+                                138, 29, 92, 1),
+                            tabs: tabs,
+                            isScrollable: true,
+                          ),
+                        ),
+                        Expanded(child: TabBarView(children: tabWidgetList),)
+                      ],
+                    ),
+                  ),
                 ),
-                body: TabBarView(children: tabWidgetList),
               );
             })));
   }
@@ -195,10 +292,10 @@ class TabWidgetList extends StatefulWidget {
 
   TabWidgetList(
       {super.key,
-      required this.formItems,
-      required this.moduleItem,
-      this.updateState,
-      this.horizontalScroll});
+        required this.formItems,
+        required this.moduleItem,
+        this.updateState,
+        this.horizontalScroll});
 
   @override
   State<TabWidgetList> createState() => _TabWidgetListState();
@@ -220,27 +317,27 @@ class _TabWidgetListState extends State<TabWidgetList> {
         height: double.infinity,
         child: SingleChildScrollView(
             child: Column(mainAxisSize: MainAxisSize.max, children: [
-          const SizedBox(
-            height: 12,
-          ),
-          Form(
-              key: _formKey,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 18, right: 18, top: 8),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: sortedForms.length,
-                  itemBuilder: (context, index) {
-                    return BaseFormComponent(
-                        formItem: sortedForms[index],
-                        moduleItem: widget.moduleItem,
-                        formKey: _formKey,
-                        formItems: sortedForms,
-                        child: IFormWidget(
-                          sortedForms[index],
-                        ).render());
-                  }))
-        ])));
+              const SizedBox(
+                height: 12,
+              ),
+              Form(
+                  key: _formKey,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(left: 18, right: 18, top: 8),
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: sortedForms.length,
+                      itemBuilder: (context, index) {
+                        return BaseFormComponent(
+                            formItem: sortedForms[index],
+                            moduleItem: widget.moduleItem,
+                            formKey: _formKey,
+                            formItems: sortedForms,
+                            child: IFormWidget(
+                              sortedForms[index],
+                            ).render());
+                      }))
+            ])));
   }
 
   bool get wantKeepAlive => true;
