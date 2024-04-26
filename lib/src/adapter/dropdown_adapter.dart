@@ -83,6 +83,7 @@ class _BeneficiaryDropDown implements IDropDownAdapter {
         merchantID == 'AIRTIME' ||
         merchantID == 'MTNUGAIRTIME' ||
         merchantID == 'MMONEY' ||
+        merchantID == 'DEPOSIT' ||
         merchantID == 'AIRTELUG' ||
         merchantID == 'UGANDAMTNC2B' ||
         merchantID == 'AIRTELC2B') {

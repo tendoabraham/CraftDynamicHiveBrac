@@ -338,7 +338,7 @@ class _DynamicButtonState extends State<DynamicButton> {
     return Builder(builder: (BuildContext context) {
       return Container(
           alignment: Alignment.bottomCenter,
-          padding: const EdgeInsets.symmetric(vertical: 24),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: Consumer<PluginState>(builder: (context, state, child) {
             return state.loadingNetworkData
                 ? LoadUtil()
