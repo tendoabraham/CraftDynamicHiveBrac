@@ -26,19 +26,19 @@ class AlertUtil {
                   title: const Text(
                     "Error!",
                     style: TextStyle(
-                        fontFamily: "Myriad Pro", fontWeight: FontWeight.bold),
+                        fontFamily: "Mulish", fontWeight: FontWeight.bold),
                   ),
                   content: Text(
                     message,
                     style: TextStyle(
-                      fontFamily: "Myriad Pro",
+                      fontFamily: "Mulish",
                     ),
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text(
+                      child: Text(
                         "OK",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontFamily: "Mulish", fontWeight: FontWeight.bold, fontSize: 18, color: APIService.appPrimaryColor),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
