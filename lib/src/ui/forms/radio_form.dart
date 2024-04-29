@@ -183,8 +183,9 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
       chips.add(Expanded(
           flex: 1,
           child: Container(
+              padding: EdgeInsets.zero,
               height: 54,
-              margin: const EdgeInsets.only(right: 2),
+              margin: const EdgeInsets.only(right: 4),
               child: ChoiceChip(
                 side: _value == index
                     ? null
