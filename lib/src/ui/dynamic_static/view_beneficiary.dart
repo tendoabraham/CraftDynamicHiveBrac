@@ -187,16 +187,58 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        AlertUtil.showAlertDialog(context,
-                                            "Confirm action to delete this beneficiary ${beneficiary.accountAlias}",
-                                            isConfirm: true,
-                                            title: "Delete",
-                                            confirmButtonText: "Delete")
-                                            .then((value) {
-                                          if (value) {
-                                            deleteBeneficiary(beneficiary, context);
-                                          }
-                                        });
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                "Alert",
+                                                style: TextStyle(
+                                                  fontFamily: "Mulish",
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              content: Text(
+                                                "Confirm action to delete this beneficiary ${beneficiary.accountAlias}",
+                                                style: TextStyle(
+                                                  fontFamily: "Mulish",
+                                                ),
+                                              ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: const Text(
+                                                    "Cancel",
+                                                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontFamily: "Mulish", fontSize: 18),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop(true);
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text(
+                                                    "Yes",
+                                                    style: TextStyle(fontWeight: FontWeight.bold, color: APIService.appPrimaryColor, fontFamily: "Mulish", fontSize: 18),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop(true);
+                                                    deleteBeneficiary(beneficiary, context);
+                                                    // Allow back navigation
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                        // AlertUtil.showAlertDialog(context,
+                                        //     "Confirm action to delete this beneficiary ${beneficiary.accountAlias}",
+                                        //     isConfirm: true,
+                                        //     title: "Delete",
+                                        //     confirmButtonText: "Delete")
+                                        //     .then((value) {
+                                        //   if (value) {
+                                        //     deleteBeneficiary(beneficiary, context);
+                                        //   }
+                                        // });
                                       },
                                       icon: const Icon(
                                         Icons.delete_outline_outlined,
