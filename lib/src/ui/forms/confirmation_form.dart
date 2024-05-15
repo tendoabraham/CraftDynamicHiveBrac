@@ -62,7 +62,7 @@ class ConfirmationForm {
                     width: 300,
                     child: WidgetFactory.buildButton(context, () {
                       Navigator.of(context).pop(0);
-                    }, "Continue".toUpperCase())),
+                    }, "Confirm".toUpperCase())),
                 const SizedBox(
                   height: 44,
                 )

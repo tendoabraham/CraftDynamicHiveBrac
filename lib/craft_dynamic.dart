@@ -65,6 +65,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:camera/camera.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:brac_mobile/src/home/add_beneficiary.dart';
+import 'package:brac_mobile/src/home/Data.dart';
 import 'src/builder/factory_builder.dart';
 import 'src/native_binder/native_bind.dart';
 import 'src/network/api_util.dart';

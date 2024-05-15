@@ -230,6 +230,16 @@ class ModuleUtil {
             break;
           }
         }
+      case ModuleId.MTNDATA:
+        {
+          {
+            CommonUtils.navigateToRoute(
+                context: context,
+                widget: Data(
+                ));
+            break;
+          }
+        }
       case ModuleId.VIEWBENEFICIARY:
         {
           CommonUtils.navigateToRoute(
